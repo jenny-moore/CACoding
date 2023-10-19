@@ -1,5 +1,8 @@
 package view;
 
+import interface_adapter.clear_users.ClearController;
+import interface_adapter.clear_users.ClearState;
+import interface_adapter.clear_users.ClearViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
@@ -17,21 +20,24 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     public final String viewName = "sign up";
 
     private final SignupViewModel signupViewModel;
+    private final ClearViewModel clearViewModel;
     private final JTextField usernameInputField = new JTextField(15);
     private final JPasswordField passwordInputField = new JPasswordField(15);
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
     private final SignupController signupController;
+    private final ClearController clearController;
 
     private final JButton signUp;
     private final JButton cancel;
 
-    // TODO Note: this is the new JButton for clearing the users file
     private final JButton clear;
 
-    public SignupView(SignupController controller, SignupViewModel signupViewModel) {
+    public SignupView(SignupController controller, SignupViewModel signupViewModel, ClearController clearController, ClearViewModel clearViewModel) {
 
         this.signupController = controller;
         this.signupViewModel = signupViewModel;
+        this.clearController = clearController;
+        this.clearViewModel = clearViewModel;
         signupViewModel.addPropertyChangeListener(this);
 
         JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
@@ -49,11 +55,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         buttons.add(signUp);
         cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
         buttons.add(cancel);
-
-        // TODO Note: the following line instantiates the "clear" button; it uses
-        //      a CLEAR_BUTTON_LABEL constant which is defined in the SignupViewModel class.
-        //      You need to add this "clear" button to the "buttons" panel.
         clear = new JButton(SignupViewModel.CLEAR_BUTTON_LABEL);
+        buttons.add(clear);
 
         signUp.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -75,14 +78,20 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         // TODO Add the body to the actionPerformed method of the action listener below
         //      for the "clear" button. You'll need to write the controller before
         //      you can complete this.
+
         clear.addActionListener(
                 new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent e) {
-
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(clear)) {
+                            clearController.execute();
+                            ClearState state = clearViewModel.getState();
+                        }
                     }
                 }
         );
+
+
 
         cancel.addActionListener(this);
 
@@ -163,15 +172,26 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     /**
      * React to a button click that results in evt.
      */
+
     public void actionPerformed(ActionEvent evt) {
         JOptionPane.showConfirmDialog(this, "Cancel not implemented yet.");
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        SignupState state = (SignupState) evt.getNewValue();
-        if (state.getUsernameError() != null) {
-            JOptionPane.showMessageDialog(this, state.getUsernameError());
+        if (evt.getNewValue() instanceof SignupState){
+            SignupState state = (SignupState) evt.getNewValue();
+            if (state.getUsernameError() != null) {
+                JOptionPane.showMessageDialog(this, state.getUsernameError());
+            }}
+        else if (evt.getNewValue() instanceof ClearState){
+            ClearState clearState = (ClearState) evt.getNewValue();
+            String message = new String("Deleted users: /n");
+            for (String user: clearState.getDeletedUsers()){
+                message += user + "/n";
+            }
+            JOptionPane.showMessageDialog(this, message);
         }
+
     }
 }
