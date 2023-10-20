@@ -22,7 +22,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface, 
     private final Map<String, User> accounts = new HashMap<>();
     private static String[] deletedUsers = new String[0];
 
-    private UserFactory userFactory;
+    private final UserFactory userFactory;
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory) throws IOException {
         this.userFactory = userFactory;
@@ -101,10 +101,14 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface, 
 
     @Override
     public void clear() {
-        deletedUsers = accounts.keySet().toArray(new String[accounts.size()]);
+        deletedUsers = new String[accounts.size()];
+        Object[] users = accounts.keySet().toArray(new String[accounts.size()]);
         int i = 0;
-        for (String user : deletedUsers) {
+        for (Object item : users) {
+            String user = item.toString();
+            deletedUsers[i] = user;
             accounts.remove(user);
+            i++;
         }
         this.save();
     }

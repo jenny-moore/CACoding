@@ -1,7 +1,6 @@
 package interface_adapter.clear_users;
 
 import interface_adapter.ViewModel;
-import interface_adapter.login.LoginState;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -20,7 +19,7 @@ public class ClearViewModel extends ViewModel {
 
     @Override
     public void firePropertyChanged() {
-        support.firePropertyChange("state", null, this.clearState);
+        support.firePropertyChange("clearState", null, this.clearState);
     }
 
     @Override

@@ -83,11 +83,9 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(clear)) {
+                        if (evt.getSource().equals(clear)){
                             clearController.execute();
-                            ClearState state = clearViewModel.getState();
-                        }
-                    }
+                    }}
                 }
         );
 
@@ -179,12 +177,12 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getNewValue() instanceof SignupState){
+        if (evt.getPropertyName() == "state"){
             SignupState state = (SignupState) evt.getNewValue();
             if (state.getUsernameError() != null) {
                 JOptionPane.showMessageDialog(this, state.getUsernameError());
             }}
-        else if (evt.getNewValue() instanceof ClearState){
+        else {
             ClearState clearState = (ClearState) evt.getNewValue();
             String message = new String("Deleted users: /n");
             for (String user: clearState.getDeletedUsers()){
@@ -192,6 +190,5 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
             }
             JOptionPane.showMessageDialog(this, message);
         }
-
     }
 }

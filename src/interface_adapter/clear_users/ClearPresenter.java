@@ -1,7 +1,6 @@
 package interface_adapter.clear_users;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
 import use_case.clear_users.ClearOutputBoundary;
@@ -10,7 +9,7 @@ import use_case.clear_users.ClearOutputData;
 public class ClearPresenter implements ClearOutputBoundary {
     private final SignupViewModel signupViewModel;
     private final ClearViewModel clearViewModel;
-    private ViewManagerModel viewManagerModel;
+    private final ViewManagerModel viewManagerModel;
 
     public ClearPresenter(SignupViewModel signupViewModel, ClearViewModel clearViewModel, ViewManagerModel viewManagerModel) {
         this.signupViewModel = signupViewModel;
@@ -25,6 +24,7 @@ public class ClearPresenter implements ClearOutputBoundary {
         this.clearViewModel.setState(clearState);
         this.clearViewModel.firePropertyChanged();
 
+        /*
         SignupState signupState = signupViewModel.getState();
         signupState.setUsername("");
         signupState.setPassword("");
@@ -35,6 +35,7 @@ public class ClearPresenter implements ClearOutputBoundary {
 
         this.viewManagerModel.setActiveView(signupViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+         */
         this.viewManagerModel.setActiveView(clearViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

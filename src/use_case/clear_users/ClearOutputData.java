@@ -12,4 +12,8 @@ public class ClearOutputData {
     public String[] getUsers(){
         return this.users;
     }
+
+    public void setUsers(String[] users){
+        this.users = users;
+    }
 }
