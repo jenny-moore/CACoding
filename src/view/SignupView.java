@@ -39,6 +39,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.clearController = clearController;
         this.clearViewModel = clearViewModel;
         signupViewModel.addPropertyChangeListener(this);
+        clearViewModel.addPropertyChangeListener(this);
 
         JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -177,16 +178,16 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName() == "state"){
+        if (evt.getPropertyName().equals("state")){
             SignupState state = (SignupState) evt.getNewValue();
             if (state.getUsernameError() != null) {
                 JOptionPane.showMessageDialog(this, state.getUsernameError());
             }}
         else {
             ClearState clearState = (ClearState) evt.getNewValue();
-            String message = new String("Deleted users: /n");
+            String message = new String("Deleted users: \n");
             for (String user: clearState.getDeletedUsers()){
-                message += user + "/n";
+                message += user + "\n";
             }
             JOptionPane.showMessageDialog(this, message);
         }

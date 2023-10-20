@@ -24,18 +24,6 @@ public class ClearPresenter implements ClearOutputBoundary {
         this.clearViewModel.setState(clearState);
         this.clearViewModel.firePropertyChanged();
 
-        /*
-        SignupState signupState = signupViewModel.getState();
-        signupState.setUsername("");
-        signupState.setPassword("");
-        signupState.setRepeatPassword("");
-        signupState.setUsernameError(null);
-        this.signupViewModel.setState((signupState));
-        this.signupViewModel.firePropertyChanged();
-
-        this.viewManagerModel.setActiveView(signupViewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
-         */
         this.viewManagerModel.setActiveView(clearViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
